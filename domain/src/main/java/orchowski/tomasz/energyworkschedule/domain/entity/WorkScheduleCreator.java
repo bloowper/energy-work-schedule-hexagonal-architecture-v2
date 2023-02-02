@@ -38,7 +38,6 @@ class WorkScheduleCreator {
     }
 
     private List<TimelinePoint> mapToSortedTimeLinePoints(SortedSet<Policy> policies) {
-        log.info("Test");
         return policies.stream()
                 .flatMap(policy ->
                         List.of(
