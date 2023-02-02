@@ -1,0 +1,42 @@
+package orchowski.tomasz.energyworkschedule.application.port.input;
+
+import lombok.RequiredArgsConstructor;
+import orchowski.tomasz.energyworkschedule.application.port.output.DeviceManagementOutputPort;
+import orchowski.tomasz.energyworkschedule.application.usecase.PolicyManagementUseCase;
+import orchowski.tomasz.energyworkschedule.domain.entity.Device;
+import orchowski.tomasz.energyworkschedule.domain.entity.Policy;
+import orchowski.tomasz.energyworkschedule.domain.value.Id;
+import orchowski.tomasz.energyworkschedule.domain.value.MaxPowerUsageRule;
+import orchowski.tomasz.energyworkschedule.domain.value.Priority;
+import orchowski.tomasz.energyworkschedule.domain.value.TimePeriod;
+
+@RequiredArgsConstructor
+public class PolicyManagementInputPort implements PolicyManagementUseCase {
+
+    private final DeviceManagementOutputPort deviceManagementOutputPort;
+
+
+    @Override
+    public Device fetchDevice(Id id) {
+        return deviceManagementOutputPort.fetchDevice(id);
+    }
+
+    @Override
+    public Policy createPowerUsagePolicy(TimePeriod effectiveDate, Priority priority, Double maxAllowedPowerUsage) {
+        return new Policy(effectiveDate, priority, new MaxPowerUsageRule(maxAllowedPowerUsage));
+    }
+
+    @Override
+    public Device addPolicyToDevice(Device device, Policy policy) {
+        device.addNewPolicy(policy);
+        deviceManagementOutputPort.persistDevice(device);
+        return device;
+    }
+
+    @Override
+    public Device removePolicyFromDevice(Id policyId, Device device) {
+        device.removePolicy(policyId);
+        deviceManagementOutputPort.persistDevice(device);
+        return device;
+    }
+}
