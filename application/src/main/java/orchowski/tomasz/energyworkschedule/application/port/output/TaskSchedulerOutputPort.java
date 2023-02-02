@@ -5,5 +5,5 @@ import orchowski.tomasz.energyworkschedule.domain.value.Id;
 public interface TaskSchedulerOutputPort {
     void scheduleTask();
 
-    void cancelTask(Id id);
+    void cancelScheduledTasksForDevice(Id deviceId);
 }
