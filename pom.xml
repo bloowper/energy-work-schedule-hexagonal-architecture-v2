@@ -12,6 +12,8 @@
         <module>domain</module>
         <module>application</module>
         <module>framework</module>
+        <module>untitled</module>
+        <module>bootstrap</module>
     </modules>
 
     <properties>
