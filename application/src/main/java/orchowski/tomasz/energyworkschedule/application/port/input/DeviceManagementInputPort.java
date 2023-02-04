@@ -6,6 +6,8 @@ import orchowski.tomasz.energyworkschedule.application.usecase.DeviceManagementU
 import orchowski.tomasz.energyworkschedule.domain.entity.Device;
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class DeviceManagementInputPort implements DeviceManagementUseCase {
     private final DeviceManagementOutputPort deviceManagementOutputPort;
@@ -16,12 +18,12 @@ public class DeviceManagementInputPort implements DeviceManagementUseCase {
     }
 
     @Override
-    public Device removeDevice(Id id) {
+    public Optional<Device> removeDevice(Id id) {
         return deviceManagementOutputPort.removeDevice(id);
     }
 
     @Override
-    public Device fetchDevice(Id id) {
+    public Optional<Device> fetchDevice(Id id) {
         return deviceManagementOutputPort.fetchDevice(id);
     }
 
