@@ -8,8 +8,10 @@ import orchowski.tomasz.energyworkschedule.domain.value.Id;
 import orchowski.tomasz.energyworkschedule.domain.value.WorkSchedule;
 
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
@@ -28,8 +30,13 @@ public class Device {
         policies.add(policy);
     }
 
-    public void removePolicy(Id policyId) {
-        policies.removeIf(policy -> policy.getId().equals(policyId));
+    public Optional<Policy> removePolicy(Id policyId) {
+        Predicate<Policy> policyPredicate = policy -> policyId.equals(policy.getId());
+        Optional<Policy> optionalPolicy = policies.stream()
+                .filter(policyPredicate)
+                .findFirst();
+        policies.removeIf(policyPredicate);
+        return optionalPolicy;
     }
 
     public WorkSchedule generateWorkSchedule() {

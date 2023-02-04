@@ -12,6 +12,8 @@ import orchowski.tomasz.energyworkschedule.domain.value.Priority;
 import orchowski.tomasz.energyworkschedule.domain.value.TimePeriod;
 import orchowski.tomasz.energyworkschedule.domain.value.WorkSchedule;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class PolicyManagementInputPort implements PolicyManagementUseCase {
     private final DeviceManagementOutputPort deviceManagementOutputPort;
@@ -19,7 +21,7 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
 
 
     @Override
-    public Device fetchDevice(Id id) {
+    public Optional<Device> fetchDevice(Id id) {
         return deviceManagementOutputPort.fetchDevice(id);
     }
 
@@ -37,11 +39,11 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     }
 
     @Override
-    public Device removePolicyFromDevice(Id policyId, Device device) {
-        device.removePolicy(policyId);
+    public Optional<Policy> removePolicyFromDevice(Id policyId, Device device) {
+        Optional<Policy> removedPolicy = device.removePolicy(policyId);
         deviceManagementOutputPort.persistDevice(device);
         persistSnapshotWithWorkSchedule(device);
-        return device;
+        return removedPolicy;
     }
 
     private WorkSchedule persistSnapshotWithWorkSchedule(Device device) {
