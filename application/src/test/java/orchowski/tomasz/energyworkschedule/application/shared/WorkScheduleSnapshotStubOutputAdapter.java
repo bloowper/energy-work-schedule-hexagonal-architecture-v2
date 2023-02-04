@@ -21,4 +21,9 @@ class WorkScheduleSnapshotStubOutputAdapter implements WorkScheduleSnapshotOutpu
         workScheduleMap.put(deviceId, workSchedule);
         return workSchedule;
     }
+
+    @Override
+    public void removeForDevice(Id id) {
+        workScheduleMap.remove(id);
+    }
 }

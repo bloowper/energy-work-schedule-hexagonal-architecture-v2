@@ -2,6 +2,7 @@ package orchowski.tomasz.energyworkschedule.application.port.input;
 
 import lombok.RequiredArgsConstructor;
 import orchowski.tomasz.energyworkschedule.application.port.output.DeviceManagementOutputPort;
+import orchowski.tomasz.energyworkschedule.application.port.output.WorkScheduleSnapshotOutputPort;
 import orchowski.tomasz.energyworkschedule.application.usecase.DeviceManagementUseCase;
 import orchowski.tomasz.energyworkschedule.domain.entity.Device;
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
@@ -11,6 +12,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DeviceManagementInputPort implements DeviceManagementUseCase {
     private final DeviceManagementOutputPort deviceManagementOutputPort;
+    private final WorkScheduleSnapshotOutputPort workScheduleSnapshotOutputPort;
 
     @Override
     public Device createDevice(Id id) {
@@ -19,6 +21,7 @@ public class DeviceManagementInputPort implements DeviceManagementUseCase {
 
     @Override
     public Optional<Device> removeDevice(Id id) {
+        workScheduleSnapshotOutputPort.removeForDevice(id);
         return deviceManagementOutputPort.removeDevice(id);
     }
 

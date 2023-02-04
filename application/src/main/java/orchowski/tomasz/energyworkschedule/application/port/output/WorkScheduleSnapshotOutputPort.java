@@ -10,4 +10,6 @@ public interface WorkScheduleSnapshotOutputPort {
     Optional<WorkSchedule> getWorkScheduleSnapshot(Id deviceId);
 
     WorkSchedule persistWorkScheduleSnapshot(WorkSchedule workSchedule, Id deviceId);
+
+    void removeForDevice(Id id);
 }

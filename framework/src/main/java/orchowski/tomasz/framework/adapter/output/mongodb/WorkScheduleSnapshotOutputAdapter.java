@@ -17,4 +17,9 @@ class WorkScheduleSnapshotOutputAdapter implements WorkScheduleSnapshotOutputPor
     public WorkSchedule persistWorkScheduleSnapshot(WorkSchedule workSchedule, Id deviceId) {
         return null;
     }
+
+    @Override
+    public void removeForDevice(Id id) {
+
+    }
 }
