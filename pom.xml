@@ -12,7 +12,6 @@
         <module>domain</module>
         <module>application</module>
         <module>framework</module>
-        <module>untitled</module>
         <module>bootstrap</module>
     </modules>
 
@@ -64,6 +63,7 @@
             <version>3.24.2</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
