@@ -1,6 +1,7 @@
 package orchowski.tomasz.energyworkschedule.application.port.input;
 
 import lombok.RequiredArgsConstructor;
+import orchowski.tomasz.energyworkschedule.application.exception.EntityNotFoundException;
 import orchowski.tomasz.energyworkschedule.application.port.output.DeviceManagementOutputPort;
 import orchowski.tomasz.energyworkschedule.application.port.output.WorkScheduleSnapshotOutputPort;
 import orchowski.tomasz.energyworkschedule.application.usecase.WorkScheduleViewUseCase;
@@ -13,14 +14,12 @@ public class WorkScheduleViewInputPort implements WorkScheduleViewUseCase {
     private final DeviceManagementOutputPort deviceManagementOutputPort;
     private final WorkScheduleSnapshotOutputPort workScheduleSnapshotOutputPort;
 
-
     @Override
-    public Device fetchDevice(Id id) {
-        return deviceManagementOutputPort.fetchDevice(id);
+    public WorkSchedule getWorkScheduleForDevice(Id deviceId) {
+        return workScheduleSnapshotOutputPort
+                .getWorkScheduleSnapshot(deviceId)
+                .orElseGet(() -> deviceManagementOutputPort.fetchDevice(deviceId).orElseThrow(() -> new EntityNotFoundException(Device.class, deviceId)).generateWorkSchedule());
+
     }
 
-    @Override
-    public WorkSchedule getWorkScheduleForDevice(Device device) {
-        return workScheduleSnapshotOutputPort.getWorkScheduleSnapshot(device.getId()).orElseGet(device::generateWorkSchedule);
-    }
 }
