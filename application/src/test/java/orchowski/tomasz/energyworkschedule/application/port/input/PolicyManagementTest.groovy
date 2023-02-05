@@ -8,10 +8,10 @@ import orchowski.tomasz.energyworkschedule.domain.value.TimePeriod
 import java.time.Duration
 import java.time.Instant
 
-class PolicyManagementInputPortTest extends BaseSpecification {
+class PolicyManagementTest extends BaseSpecification {
 
     def "User should be able to add new policy to device"() {
-        given: "User previously added device"
+        given: "System contain device"
         def deviceId = Id.generateNew()
         deviceManagementUseCase.persistDevice(deviceManagementUseCase.createDevice(deviceId))
 
@@ -26,7 +26,6 @@ class PolicyManagementInputPortTest extends BaseSpecification {
         def maxPowerUsage = 1500
 
         when: "User start process of adding new policy with given specified values"
-        // User create new policy
         def policy = policyManagementUseCase.createPowerUsagePolicy(
                 timePeriod,
                 priority,
