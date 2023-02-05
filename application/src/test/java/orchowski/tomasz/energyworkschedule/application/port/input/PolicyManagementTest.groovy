@@ -25,7 +25,7 @@ class PolicyManagementTest extends BaseSpecification {
         and: "User has specified max allowed power usage for policy"
         def maxPowerUsage = 1500
 
-        when: "User start process of adding new policy with given specified values"
+        when: "User add policy to device"
         def policy = policyManagementUseCase.createPowerUsagePolicy(
                 timePeriod,
                 priority,
