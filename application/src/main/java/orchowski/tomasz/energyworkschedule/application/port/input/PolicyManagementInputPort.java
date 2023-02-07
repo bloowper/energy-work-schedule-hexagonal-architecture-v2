@@ -32,9 +32,10 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
 
     @Override
     public Device addPolicyToDevice(Device device, Policy policy) {
+        // [Q] how to handle this better? API user could add policy without calling UseCase method, this lead to not creating snapshot of work-schedule
         device.addNewPolicy(policy);
         deviceManagementOutputPort.persistDevice(device);
-        persistSnapshotWithWorkSchedule(device);
+        creteSnapshotWithWorkSchedule(device);
         return device;
     }
 
@@ -42,13 +43,16 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     public Optional<Policy> removePolicyFromDevice(Id policyId, Device device) {
         Optional<Policy> removedPolicy = device.removePolicy(policyId);
         deviceManagementOutputPort.persistDevice(device);
-        persistSnapshotWithWorkSchedule(device);
+        creteSnapshotWithWorkSchedule(device);
         return removedPolicy;
     }
 
-    private WorkSchedule persistSnapshotWithWorkSchedule(Device device) {
-        WorkSchedule workSchedule = device.generateWorkSchedule();
-        workScheduleSnapshotOutputPort.persistWorkScheduleSnapshot(workSchedule, device.getId());
-        return workSchedule;
+    private void creteSnapshotWithWorkSchedule(Device device) {
+        if (device.getPolicies().size() > 0) {
+            WorkSchedule workSchedule = device.generateWorkSchedule();
+            workScheduleSnapshotOutputPort.persistWorkScheduleSnapshot(workSchedule, device.getId());
+        } else {
+            workScheduleSnapshotOutputPort.removeForDevice(device.getId());
+        }
     }
 }

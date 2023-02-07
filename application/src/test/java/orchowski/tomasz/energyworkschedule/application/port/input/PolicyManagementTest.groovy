@@ -1,6 +1,7 @@
 package orchowski.tomasz.energyworkschedule.application.port.input
 
 import orchowski.tomasz.energyworkschedule.application.shared.BaseSpecification
+import orchowski.tomasz.energyworkschedule.domain.entity.Device
 import orchowski.tomasz.energyworkschedule.domain.value.Id
 import orchowski.tomasz.energyworkschedule.domain.value.Priority
 import orchowski.tomasz.energyworkschedule.domain.value.TimePeriod
@@ -9,11 +10,18 @@ import java.time.Duration
 import java.time.Instant
 
 class PolicyManagementTest extends BaseSpecification {
+    def Id deviceId;
+    def Device device;
+
+    def setup() {
+        deviceId = Id.generateNew()
+        device = deviceManagementUseCase.createDevice(deviceId)
+        deviceManagementUseCase.persistDevice(device)
+    }
 
     def "User should be able to add new policy to device"() {
         given: "System contain device"
-        def deviceId = Id.generateNew()
-        deviceManagementUseCase.persistDevice(deviceManagementUseCase.createDevice(deviceId))
+        device
 
         and: "User has specified time period for new policy"
         def timePeriod = new TimePeriod(Instant.now(), Instant.now().plus(Duration.ofHours(10)))
@@ -26,28 +34,45 @@ class PolicyManagementTest extends BaseSpecification {
         def maxPowerUsage = 1500
 
         when: "User add policy to device"
-        def policy = policyManagementUseCase.createPowerUsagePolicy(
+        def newPolicy = policyManagementUseCase.createPowerUsagePolicy(
                 timePeriod,
                 priority,
                 maxPowerUsage
         )
-        policyManagementUseCase.addPolicyToDevice(policyManagementUseCase.fetchDevice(deviceId).get(), policy)
+        policyManagementUseCase.addPolicyToDevice(policyManagementUseCase.fetchDevice(deviceId).get(), newPolicy)
 
-        then: "System should contain new policy for device"
-        policyManagementUseCase.fetchDevice(deviceId).isPresent()
+        then: "System should contain new policy"
         policyManagementUseCase.fetchDevice(deviceId).get().getPolicies()
                 .stream()
-                .filter { (it.getEffectiveDate() == timePeriod) }
-                .filter { (it.getPriority() == priority) }
-                .filter { (it.getMaxPowerUsageRule().getValue() == maxPowerUsage) }
+                .filter { (it == newPolicy) }
                 .findAny().isPresent()
     }
 
     def "User should be able to remove policy from device"() {
-        //todo
+        given: "System contain device with policy"
+        def policy = policyManagementUseCase.createPowerUsagePolicy(
+                new TimePeriod(Instant.now(), Instant.now().plus(Duration.ofHours(10))),
+                new Priority(250),
+                200
+        )
+        policyManagementUseCase.addPolicyToDevice(device, policy)
+
+        and: "User has specified id of policy to deletion"
+        def id = policy.getId()
+
+        when: "User remove policy from device"
+        policyManagementUseCase.removePolicyFromDevice(id, device)
+
+        then: "System should not contain deleted policy"
+        policyManagementUseCase.fetchDevice(deviceId).get()
+                .getPolicies().stream()
+                .filter { (it == policy) }
+                .findAny()
+                .isEmpty()
+
     }
 
     def "User should be able to reschedule policy"() {
-        //todo
+
     }
 }
