@@ -1,4 +1,4 @@
-package orchowski.tomasz.framework.adapter.input.rest;
+package orchowski.tomasz.energyworkschedule.framework.adapter.input.rest;
 
 import lombok.RequiredArgsConstructor;
 import orchowski.tomasz.energyworkschedule.application.usecase.WorkScheduleViewUseCase;

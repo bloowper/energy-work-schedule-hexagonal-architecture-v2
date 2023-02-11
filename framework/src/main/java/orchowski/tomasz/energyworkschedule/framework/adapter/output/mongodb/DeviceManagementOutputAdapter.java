@@ -1,4 +1,4 @@
-package orchowski.tomasz.framework.adapter.output.mongodb;
+package orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb;
 
 import orchowski.tomasz.energyworkschedule.application.port.output.DeviceManagementOutputPort;
 import orchowski.tomasz.energyworkschedule.domain.entity.Device;
