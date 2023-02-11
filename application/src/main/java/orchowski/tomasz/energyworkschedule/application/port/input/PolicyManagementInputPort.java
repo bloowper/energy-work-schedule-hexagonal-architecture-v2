@@ -11,10 +11,12 @@ import orchowski.tomasz.energyworkschedule.domain.value.MaxPowerUsageRule;
 import orchowski.tomasz.energyworkschedule.domain.value.Priority;
 import orchowski.tomasz.energyworkschedule.domain.value.TimePeriod;
 import orchowski.tomasz.energyworkschedule.domain.value.WorkSchedule;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Service
 public class PolicyManagementInputPort implements PolicyManagementUseCase {
     private final DeviceManagementOutputPort deviceManagementOutputPort;
     private final WorkScheduleSnapshotOutputPort workScheduleSnapshotOutputPort;

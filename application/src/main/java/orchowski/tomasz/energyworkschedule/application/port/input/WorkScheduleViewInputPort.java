@@ -8,8 +8,10 @@ import orchowski.tomasz.energyworkschedule.application.usecase.WorkScheduleViewU
 import orchowski.tomasz.energyworkschedule.domain.entity.Device;
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
 import orchowski.tomasz.energyworkschedule.domain.value.WorkSchedule;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
+@Service
 public class WorkScheduleViewInputPort implements WorkScheduleViewUseCase {
     private final DeviceManagementOutputPort deviceManagementOutputPort;
     private final WorkScheduleSnapshotOutputPort workScheduleSnapshotOutputPort;

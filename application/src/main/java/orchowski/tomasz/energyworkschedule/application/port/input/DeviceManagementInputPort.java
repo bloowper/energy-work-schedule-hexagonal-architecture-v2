@@ -6,11 +6,14 @@ import orchowski.tomasz.energyworkschedule.application.port.output.WorkScheduleS
 import orchowski.tomasz.energyworkschedule.application.usecase.DeviceManagementUseCase;
 import orchowski.tomasz.energyworkschedule.domain.entity.Device;
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Service
 public class DeviceManagementInputPort implements DeviceManagementUseCase {
+    // [Q] Shouldn't the framework's hexagon be solely responsible for creating objects in the spring context?
     private final DeviceManagementOutputPort deviceManagementOutputPort;
     private final WorkScheduleSnapshotOutputPort workScheduleSnapshotOutputPort;
 
