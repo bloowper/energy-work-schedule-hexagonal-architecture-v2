@@ -61,7 +61,7 @@ class PolicyManagementTest extends BaseSpecification {
         def id = policy.getId()
 
         when: "User remove policy from device"
-        policyManagementUseCase.removePolicyFromDevice(id, device)
+        policyManagementUseCase.removePolicyFromDevice(device, id)
 
         then: "System should not contain deleted policy"
         deviceManagementUseCase.fetchDevice(device.id).get()

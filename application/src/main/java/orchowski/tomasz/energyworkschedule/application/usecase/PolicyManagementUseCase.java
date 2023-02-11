@@ -14,5 +14,12 @@ public interface PolicyManagementUseCase {
 
     Device addPolicyToDevice(Device device, Policy policy);
 
-    Optional<Policy> removePolicyFromDevice(Id policyId, Device device);
+    Device addPolicyToDevice(Id deviceId, Policy policy);
+
+    Optional<Policy> getPolicy(Id deviceId, Id policyId);
+
+    Optional<Policy> removePolicyFromDevice(Device device, Id policyId);
+
+    Optional<Policy> removePolicyFromDevice(Id deviceId, Id policyId);
+
 }

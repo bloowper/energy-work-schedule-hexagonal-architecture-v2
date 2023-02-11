@@ -29,7 +29,7 @@ class DeviceManagementInputAdapter {
 
     @GetMapping("/{device-uuid}")
     Optional<Device> fetchDevice(@PathVariable("device-uuid") String deviceUuid) {
-        // [Q] Should i create separate dto for interactions with external services?
+        // [Q] Should i create separate dto for interactions view layer?
         return deviceManagementUseCase.fetchDevice(Id.withId(deviceUuid));
     }
 

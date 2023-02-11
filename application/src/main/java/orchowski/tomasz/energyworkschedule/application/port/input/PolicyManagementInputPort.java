@@ -1,6 +1,7 @@
 package orchowski.tomasz.energyworkschedule.application.port.input;
 
 import lombok.RequiredArgsConstructor;
+import orchowski.tomasz.energyworkschedule.application.exception.EntityNotFoundException;
 import orchowski.tomasz.energyworkschedule.application.port.output.DeviceManagementOutputPort;
 import orchowski.tomasz.energyworkschedule.application.port.output.WorkScheduleSnapshotOutputPort;
 import orchowski.tomasz.energyworkschedule.application.usecase.PolicyManagementUseCase;
@@ -37,11 +38,35 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     }
 
     @Override
-    public Optional<Policy> removePolicyFromDevice(Id policyId, Device device) {
+    public Device addPolicyToDevice(Id deviceId, Policy policy) {
+        // TODO add tests
+        Device device = deviceManagementOutputPort.fetchDevice(deviceId).orElseThrow(() -> new EntityNotFoundException(Device.class, deviceId));
+        return addPolicyToDevice(device, policy);
+    }
+
+    @Override
+    public Optional<Policy> getPolicy(Id deviceId, Id policyId) {
+        return deviceManagementOutputPort.fetchDevice(deviceId)
+                .flatMap(
+                        device -> device.getPolicies().stream()
+                                .filter(policy -> policy.getId().equals(policyId))
+                                .findFirst()
+                );
+    }
+
+    @Override
+    public Optional<Policy> removePolicyFromDevice(Device device, Id policyId) {
         Optional<Policy> removedPolicy = device.removePolicy(policyId);
         deviceManagementOutputPort.persistDevice(device);
         creteSnapshotWithWorkSchedule(device);
         return removedPolicy;
+    }
+
+    @Override
+    public Optional<Policy> removePolicyFromDevice(Id deviceId, Id policyId) {
+        // TODO add tests
+        return deviceManagementOutputPort.fetchDevice(deviceId)
+                .flatMap(device -> removePolicyFromDevice(device, policyId));
     }
 
     private void creteSnapshotWithWorkSchedule(Device device) {
