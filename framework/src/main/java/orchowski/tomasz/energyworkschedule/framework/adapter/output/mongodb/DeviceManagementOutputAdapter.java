@@ -3,11 +3,11 @@ package orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb;
 import orchowski.tomasz.energyworkschedule.application.port.output.DeviceManagementOutputPort;
 import orchowski.tomasz.energyworkschedule.domain.entity.Device;
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Repository
+@Component
 class DeviceManagementOutputAdapter implements DeviceManagementOutputPort {
     // TODO
     @Override

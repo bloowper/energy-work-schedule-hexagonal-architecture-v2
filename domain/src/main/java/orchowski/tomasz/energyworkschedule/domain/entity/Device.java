@@ -18,11 +18,10 @@ import java.util.function.Predicate;
 public class Device {
     @EqualsAndHashCode.Include
     private Id id;
-    private SortedSet<Policy> policies;
+    private SortedSet<Policy> policies = new TreeSet<>(Comparator.comparing(o -> o.getEffectiveDate().getStart()));
 
     public Device(Id id) {
         this.id = id;
-        this.policies = new TreeSet<>(Comparator.comparing(o -> o.getEffectiveDate().getStart()));
     }
 
     public void addNewPolicy(Policy policy) {

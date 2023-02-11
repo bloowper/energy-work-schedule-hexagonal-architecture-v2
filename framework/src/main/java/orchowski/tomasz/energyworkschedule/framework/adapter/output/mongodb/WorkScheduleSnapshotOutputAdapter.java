@@ -3,11 +3,11 @@ package orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb;
 import orchowski.tomasz.energyworkschedule.application.port.output.WorkScheduleSnapshotOutputPort;
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
 import orchowski.tomasz.energyworkschedule.domain.value.WorkSchedule;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Repository
+@Component
 class WorkScheduleSnapshotOutputAdapter implements WorkScheduleSnapshotOutputPort {
     // TODO
     @Override

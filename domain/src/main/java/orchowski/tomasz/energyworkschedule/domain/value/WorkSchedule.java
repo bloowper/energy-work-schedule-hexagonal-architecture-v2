@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class WorkSchedule {
     private final TimePeriod duration;
-    private final List<WorkShift> workShifts;
+    private final List<WorkShift> workShifts; // This should be sorted set collection
 }
