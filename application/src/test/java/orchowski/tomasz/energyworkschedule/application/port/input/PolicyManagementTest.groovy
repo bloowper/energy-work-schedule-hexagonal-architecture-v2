@@ -39,16 +39,16 @@ class PolicyManagementTest extends BaseSpecification {
                 priority,
                 maxPowerUsage
         )
-        policyManagementUseCase.addPolicyToDevice(policyManagementUseCase.fetchDevice(deviceId).get(), newPolicy)
+        policyManagementUseCase.addPolicyToDevice(device, newPolicy)
 
         then: "System should contain new policy"
-        policyManagementUseCase.fetchDevice(deviceId).get().getPolicies()
-                .stream()
+        deviceManagementUseCase.fetchDevice(device.id).get()
+                .policies.stream()
                 .filter { (it == newPolicy) }
                 .findAny().isPresent()
     }
 
-    def "User should be able to remove policy from device"() {
+    def "User should be able to remove policy"() {
         given: "System contain device with policy"
         def policy = policyManagementUseCase.createPowerUsagePolicy(
                 new TimePeriod(Instant.now(), Instant.now().plus(Duration.ofHours(10))),
@@ -64,15 +64,14 @@ class PolicyManagementTest extends BaseSpecification {
         policyManagementUseCase.removePolicyFromDevice(id, device)
 
         then: "System should not contain deleted policy"
-        policyManagementUseCase.fetchDevice(deviceId).get()
-                .getPolicies().stream()
-                .filter { (it == policy) }
-                .findAny()
-                .isEmpty()
+        deviceManagementUseCase.fetchDevice(device.id).get()
+                .policies.stream()
+                .filter { it.id == id }
+                .findAny().isEmpty()
 
     }
 
     def "User should be able to reschedule policy"() {
-
+        //TODO
     }
 }

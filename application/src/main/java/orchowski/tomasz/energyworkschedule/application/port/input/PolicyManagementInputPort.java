@@ -21,11 +21,6 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
 
 
     @Override
-    public Optional<Device> fetchDevice(Id id) {
-        return deviceManagementOutputPort.fetchDevice(id);
-    }
-
-    @Override
     public Policy createPowerUsagePolicy(TimePeriod effectiveDate, Priority priority, Double maxAllowedPowerUsage) {
         return new Policy(effectiveDate, priority, new MaxPowerUsageRule(maxAllowedPowerUsage));
     }
@@ -48,7 +43,8 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     }
 
     private void creteSnapshotWithWorkSchedule(Device device) {
-        if (device.getPolicies().size() > 0) {
+        // [Q] should move this logic to framework hexagon?
+        if (!device.getPolicies().isEmpty()) {
             WorkSchedule workSchedule = device.generateWorkSchedule();
             workScheduleSnapshotOutputPort.persistWorkScheduleSnapshot(workSchedule, device.getId());
         } else {

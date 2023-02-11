@@ -10,8 +10,6 @@ import java.util.Optional;
 
 public interface PolicyManagementUseCase {
 
-    Optional<Device> fetchDevice(Id id);
-
     Policy createPowerUsagePolicy(TimePeriod effectiveDate, Priority priority, Double maxAllowedPowerUsage);
 
     Device addPolicyToDevice(Device device, Policy policy);
