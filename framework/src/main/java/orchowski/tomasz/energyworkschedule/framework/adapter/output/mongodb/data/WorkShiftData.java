@@ -13,7 +13,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @Getter
 @Setter
-class WorkShiftData {
+public class WorkShiftData {
     Instant start;
     Instant end;
     MaxPowerUsageRuleData rule;

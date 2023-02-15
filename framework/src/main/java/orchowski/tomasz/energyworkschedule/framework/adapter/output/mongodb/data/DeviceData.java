@@ -15,10 +15,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-class DeviceData {
+public class DeviceData {
     //[Q]What to do when we introduce a new policy that contradicts current ones.
     // How to leave then the possibility to restore the old domain objects from the database?
     @Id
     private UUID id;
-    private List<PolicyData> policies;
+    private List<PolicyData> policiesData;
 }

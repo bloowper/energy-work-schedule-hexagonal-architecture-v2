@@ -9,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-class MaxPowerUsageRuleData {
+public class MaxPowerUsageRuleData {
     private Double value;
 }

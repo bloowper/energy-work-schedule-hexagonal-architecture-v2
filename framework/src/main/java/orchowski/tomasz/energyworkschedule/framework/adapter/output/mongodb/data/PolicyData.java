@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-class PolicyData {
+public class PolicyData {
     UUID id;
     Instant start;
     Instant stop;

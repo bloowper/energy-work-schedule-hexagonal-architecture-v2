@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-class WorkScheduleSnapshotData {
+public class WorkScheduleSnapshotData {
     Instant start;
     Instant end;
     List<WorkShiftData> workShifts;
