@@ -13,6 +13,7 @@ import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data
 import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data.PolicyData;
 import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data.WorkScheduleSnapshotData;
 import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data.WorkShiftData;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,7 +21,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Component
 public class MongoDbMapper {
+    // [Q] how packages should look when i want separate them but also keep them private inside output.mongodb?? I should use also JPMS????
     Device toDomain(DeviceData deviceData) {
         Device device = new Device(Id.withId(deviceData.getId().toString()));
         deviceData.getPoliciesData().stream()
@@ -84,11 +87,12 @@ public class MongoDbMapper {
     }
 
 
-    WorkScheduleSnapshotData toData(WorkSchedule workSchedule) {
+    WorkScheduleSnapshotData toData(Id deviceId, WorkSchedule workSchedule) {
         List<WorkShiftData> workShifts = workSchedule.getWorkShifts().stream()
                 .map(this::toData)
                 .toList();
         return new WorkScheduleSnapshotData(
+                deviceId.getUuid(),
                 workSchedule.getDuration().getStart(),
                 workSchedule.getDuration().getEnd(),
                 workShifts
