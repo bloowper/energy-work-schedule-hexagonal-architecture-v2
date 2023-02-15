@@ -6,12 +6,19 @@ import orchowski.tomasz.energyworkschedule.domain.value.Id;
 import orchowski.tomasz.energyworkschedule.domain.value.MaxPowerUsageRule;
 import orchowski.tomasz.energyworkschedule.domain.value.Priority;
 import orchowski.tomasz.energyworkschedule.domain.value.TimePeriod;
+import orchowski.tomasz.energyworkschedule.domain.value.WorkSchedule;
+import orchowski.tomasz.energyworkschedule.domain.value.WorkShift;
 import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data.DeviceData;
 import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data.MaxPowerUsageRuleData;
 import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data.PolicyData;
+import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data.WorkScheduleSnapshotData;
+import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data.WorkShiftData;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MongoDbMapper {
     Device toDomain(DeviceData deviceData) {
@@ -33,6 +40,23 @@ public class MongoDbMapper {
 
     Id toDomain(UUID uuid) {
         return Id.withId(uuid.toString());
+    }
+
+    WorkSchedule toDomain(WorkScheduleSnapshotData workScheduleSnapshotData) {
+        return new WorkSchedule(
+                new TimePeriod(workScheduleSnapshotData.getStart(), workScheduleSnapshotData.getEnd()),
+                workScheduleSnapshotData.getWorkShifts().stream()
+                        .map(this::toDomain)
+                        .sorted(Comparator.comparing(workShift -> workShift.getDuration().getStart())) // [Q] m8by i should read in in same order as it is persisted?
+                        .collect(Collectors.toCollection(ArrayList::new))
+        );
+    }
+
+    WorkShift toDomain(WorkShiftData workShiftData) {
+        return new WorkShift(
+                new TimePeriod(workShiftData.getStart(), workShiftData.getEnd()),
+                new MaxPowerUsageRule(workShiftData.getRule().getValue())
+        );
     }
 
     DeviceData toData(Device device) {
@@ -58,4 +82,25 @@ public class MongoDbMapper {
     UUID toData(Id id) {
         return id.getUuid();
     }
+
+
+    WorkScheduleSnapshotData toData(WorkSchedule workSchedule) {
+        List<WorkShiftData> workShifts = workSchedule.getWorkShifts().stream()
+                .map(this::toData)
+                .toList();
+        return new WorkScheduleSnapshotData(
+                workSchedule.getDuration().getStart(),
+                workSchedule.getDuration().getEnd(),
+                workShifts
+        );
+    }
+
+    WorkShiftData toData(WorkShift workShift) {
+        return new WorkShiftData(
+                workShift.getDuration().getStart(),
+                workShift.getDuration().getEnd(),
+                new MaxPowerUsageRuleData(workShift.getRule().value)
+        );
+    }
+
 }
