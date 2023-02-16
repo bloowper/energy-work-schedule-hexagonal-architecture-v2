@@ -17,7 +17,7 @@ class WorkScheduleSnapshotStubOutputAdapter implements WorkScheduleSnapshotOutpu
     }
 
     @Override
-    public WorkSchedule persistWorkScheduleSnapshot(WorkSchedule workSchedule, Id deviceId) {
+    public WorkSchedule persistWorkScheduleSnapshot(Id deviceId, WorkSchedule workSchedule) {
         workScheduleMap.put(deviceId, workSchedule);
         return workSchedule;
     }

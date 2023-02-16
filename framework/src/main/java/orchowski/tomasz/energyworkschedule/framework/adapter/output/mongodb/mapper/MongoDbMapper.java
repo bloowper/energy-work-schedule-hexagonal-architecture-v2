@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Component
 public class MongoDbMapper {
     // [Q] how packages should look when i want separate them but also keep them private inside output.mongodb?? I should use also JPMS????
-    Device toDomain(DeviceData deviceData) {
+    public Device toDomain(DeviceData deviceData) {
         Device device = new Device(Id.withId(deviceData.getId().toString()));
         deviceData.getPoliciesData().stream()
                 .map(this::toDomain)
@@ -32,7 +32,7 @@ public class MongoDbMapper {
         return device;
     }
 
-    Policy toDomain(PolicyData policyData) {
+    public Policy toDomain(PolicyData policyData) {
         return new Policy(
                 toDomain(policyData.getId()),
                 new TimePeriod(policyData.getStart(), policyData.getStop()),
@@ -41,11 +41,11 @@ public class MongoDbMapper {
         );
     }
 
-    Id toDomain(UUID uuid) {
+    public Id toDomain(UUID uuid) {
         return Id.withId(uuid.toString());
     }
 
-    WorkSchedule toDomain(WorkScheduleSnapshotData workScheduleSnapshotData) {
+    public WorkSchedule toDomain(WorkScheduleSnapshotData workScheduleSnapshotData) {
         return new WorkSchedule(
                 new TimePeriod(workScheduleSnapshotData.getStart(), workScheduleSnapshotData.getEnd()),
                 workScheduleSnapshotData.getWorkShifts().stream()
@@ -55,14 +55,14 @@ public class MongoDbMapper {
         );
     }
 
-    WorkShift toDomain(WorkShiftData workShiftData) {
+    public WorkShift toDomain(WorkShiftData workShiftData) {
         return new WorkShift(
                 new TimePeriod(workShiftData.getStart(), workShiftData.getEnd()),
                 new MaxPowerUsageRule(workShiftData.getRule().getValue())
         );
     }
 
-    DeviceData toData(Device device) {
+    public DeviceData toData(Device device) {
         List<PolicyData> policiesData = device.getPolicies().stream()
                 .map(this::toData)
                 .toList();
@@ -72,7 +72,7 @@ public class MongoDbMapper {
         );
     }
 
-    PolicyData toData(Policy policy) {
+    public PolicyData toData(Policy policy) {
         return new PolicyData(
                 toData(policy.getId()),
                 policy.getEffectiveDate().getStart(),
@@ -82,12 +82,12 @@ public class MongoDbMapper {
         );
     }
 
-    UUID toData(Id id) {
+    public UUID toData(Id id) {
         return id.getUuid();
     }
 
 
-    WorkScheduleSnapshotData toData(Id deviceId, WorkSchedule workSchedule) {
+    public WorkScheduleSnapshotData toData(Id deviceId, WorkSchedule workSchedule) {
         List<WorkShiftData> workShifts = workSchedule.getWorkShifts().stream()
                 .map(this::toData)
                 .toList();
@@ -99,7 +99,7 @@ public class MongoDbMapper {
         );
     }
 
-    WorkShiftData toData(WorkShift workShift) {
+    public WorkShiftData toData(WorkShift workShift) {
         return new WorkShiftData(
                 workShift.getDuration().getStart(),
                 workShift.getDuration().getEnd(),

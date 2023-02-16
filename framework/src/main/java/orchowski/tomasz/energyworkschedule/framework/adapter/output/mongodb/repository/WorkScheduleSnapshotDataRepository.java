@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.UUID;
 
 public interface WorkScheduleSnapshotDataRepository extends MongoRepository<WorkScheduleSnapshotData, UUID> {
-
+    Integer removeByDeviceId(UUID deviceId);
 }

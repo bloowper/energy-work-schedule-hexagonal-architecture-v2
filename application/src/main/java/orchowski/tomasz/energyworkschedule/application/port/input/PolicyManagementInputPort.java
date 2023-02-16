@@ -73,7 +73,7 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
         // [Q] should move this logic to framework hexagon?
         if (!device.getPolicies().isEmpty()) {
             WorkSchedule workSchedule = device.generateWorkSchedule();
-            workScheduleSnapshotOutputPort.persistWorkScheduleSnapshot(workSchedule, device.getId());
+            workScheduleSnapshotOutputPort.persistWorkScheduleSnapshot(device.getId(), workSchedule);
         } else {
             workScheduleSnapshotOutputPort.removeForDevice(device.getId());
         }

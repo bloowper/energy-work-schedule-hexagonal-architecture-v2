@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import orchowski.tomasz.energyworkschedule.application.port.output.DeviceManagementOutputPort;
 import orchowski.tomasz.energyworkschedule.domain.entity.Device;
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
+import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data.DeviceData;
 import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.mapper.MongoDbMapper;
+import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.repository.DeviceDataRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -12,20 +14,24 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 class DeviceManagementOutputAdapter implements DeviceManagementOutputPort {
-    // TODO
+    private final DeviceDataRepository deviceDataRepository;
     private final MongoDbMapper mongoDbMapper;
     @Override
     public Optional<Device> fetchDevice(Id id) {
-        return null;
+        return deviceDataRepository.findById(id.getUuid())
+                .map(mongoDbMapper::toDomain);
     }
 
     @Override
     public Optional<Device> removeDevice(Id id) {
-        return null;
+        return deviceDataRepository.removeById(id.getUuid())
+                .map(mongoDbMapper::toDomain);
     }
 
     @Override
     public Device persistDevice(Device device) {
-        return null;
+        DeviceData save = deviceDataRepository.save(mongoDbMapper.toData(device));
+        return mongoDbMapper.toDomain(save);
     }
+
 }
