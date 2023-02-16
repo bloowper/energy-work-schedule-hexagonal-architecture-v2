@@ -2,12 +2,18 @@ package orchowski.tomasz.energyworkschedule.bootstrap;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication(
         scanBasePackages = {
                 "orchowski.tomasz.energyworkschedule.application",
                 "orchowski.tomasz.energyworkschedule.framework",
                 "orchowski.tomasz.energyworkschedule.bootstrap"
+        }
+)
+@EnableMongoRepositories(
+        basePackages = {
+                "orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb"
         }
 )
 public class ApplicationBootstrap {
