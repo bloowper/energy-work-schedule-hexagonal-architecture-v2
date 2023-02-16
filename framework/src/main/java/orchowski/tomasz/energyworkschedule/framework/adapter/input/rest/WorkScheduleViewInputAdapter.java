@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import orchowski.tomasz.energyworkschedule.application.usecase.WorkScheduleViewUseCase;
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
 import orchowski.tomasz.energyworkschedule.domain.value.WorkSchedule;
-import org.mapstruct.MappingTarget;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
