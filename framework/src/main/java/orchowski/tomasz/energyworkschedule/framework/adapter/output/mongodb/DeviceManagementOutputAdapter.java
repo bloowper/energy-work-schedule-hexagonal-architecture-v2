@@ -18,13 +18,13 @@ class DeviceManagementOutputAdapter implements DeviceManagementOutputPort {
     private final MongoDbMapper mongoDbMapper;
     @Override
     public Optional<Device> fetchDevice(Id id) {
-        return deviceDataRepository.findById(id.getUuid())
+        return deviceDataRepository.findById(id.getUuid().toString())
                 .map(mongoDbMapper::toDomain);
     }
 
     @Override
     public Optional<Device> removeDevice(Id id) {
-        return deviceDataRepository.removeById(id.getUuid())
+        return deviceDataRepository.removeById(id.getUuid().toString())
                 .map(mongoDbMapper::toDomain);
     }
 

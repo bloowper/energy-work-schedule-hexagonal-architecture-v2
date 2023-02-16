@@ -5,9 +5,8 @@ import orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb.data
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
-import java.util.UUID;
 
-public interface DeviceDataRepository extends MongoRepository<DeviceData, UUID> {
+public interface DeviceDataRepository extends MongoRepository<DeviceData, String> {
 
-    Optional<DeviceData> removeById(UUID id);
+    Optional<DeviceData> removeById(String id);
 }

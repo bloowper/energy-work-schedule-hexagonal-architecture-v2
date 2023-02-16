@@ -19,7 +19,7 @@ class WorkScheduleSnapshotOutputAdapter implements WorkScheduleSnapshotOutputPor
 
     @Override
     public Optional<WorkSchedule> getWorkScheduleSnapshot(Id deviceId) {
-        return workScheduleSnapshotDataRepository.findById(deviceId.getUuid())
+        return workScheduleSnapshotDataRepository.findById(deviceId.getUuid().toString())
                 .map(mongoDbMapper::toDomain);
     }
 
@@ -32,6 +32,6 @@ class WorkScheduleSnapshotOutputAdapter implements WorkScheduleSnapshotOutputPor
 
     @Override
     public void removeForDevice(Id id) {
-        workScheduleSnapshotDataRepository.removeByDeviceId(id.getUuid());
+        workScheduleSnapshotDataRepository.removeByDeviceId(id.getUuid().toString());
     }
 }

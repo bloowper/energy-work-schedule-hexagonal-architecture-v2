@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 @Document
 @NoArgsConstructor
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Setter
 public class WorkScheduleSnapshotData {
     @Id
-    UUID deviceId;
+    String deviceId;
     Instant start;
     Instant end;
     List<WorkShiftData> workShifts;

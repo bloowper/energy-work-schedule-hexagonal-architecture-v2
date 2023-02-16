@@ -1,0 +1,11 @@
+### fetch device resource
+# @no-log
+GET http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75
+
+### put device resource
+# @no-log
+PUT http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75
+
+### delete device resource
+# @no-log
+DELETE http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75

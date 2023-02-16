@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -41,8 +40,8 @@ public class MongoDbMapper {
         );
     }
 
-    public Id toDomain(UUID uuid) {
-        return Id.withId(uuid.toString());
+    public Id toDomain(String id) {
+        return Id.withId(id);
     }
 
     public WorkSchedule toDomain(WorkScheduleSnapshotData workScheduleSnapshotData) {
@@ -82,8 +81,8 @@ public class MongoDbMapper {
         );
     }
 
-    public UUID toData(Id id) {
-        return id.getUuid();
+    public String toData(Id id) {
+        return id.getUuid().toString();
     }
 
 
@@ -92,7 +91,7 @@ public class MongoDbMapper {
                 .map(this::toData)
                 .toList();
         return new WorkScheduleSnapshotData(
-                deviceId.getUuid(),
+                toData(deviceId),
                 workSchedule.getDuration().getStart(),
                 workSchedule.getDuration().getEnd(),
                 workShifts
