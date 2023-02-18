@@ -3,10 +3,12 @@ package orchowski.tomasz.energyworkschedule.application.port.input;
 import lombok.RequiredArgsConstructor;
 import orchowski.tomasz.energyworkschedule.application.exception.EntityNotFoundException;
 import orchowski.tomasz.energyworkschedule.application.port.output.DeviceManagementOutputPort;
+import orchowski.tomasz.energyworkschedule.application.port.output.ShiftChangeReminderOutputPort;
 import orchowski.tomasz.energyworkschedule.application.port.output.WorkScheduleSnapshotOutputPort;
 import orchowski.tomasz.energyworkschedule.application.usecase.PolicyManagementUseCase;
 import orchowski.tomasz.energyworkschedule.domain.entity.Device;
 import orchowski.tomasz.energyworkschedule.domain.entity.Policy;
+import orchowski.tomasz.energyworkschedule.domain.event.ShiftChangeRemind;
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
 import orchowski.tomasz.energyworkschedule.domain.value.MaxPowerUsageRule;
 import orchowski.tomasz.energyworkschedule.domain.value.Priority;
@@ -14,6 +16,7 @@ import orchowski.tomasz.energyworkschedule.domain.value.TimePeriod;
 import orchowski.tomasz.energyworkschedule.domain.value.WorkSchedule;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ import java.util.Optional;
 public class PolicyManagementInputPort implements PolicyManagementUseCase {
     private final DeviceManagementOutputPort deviceManagementOutputPort;
     private final WorkScheduleSnapshotOutputPort workScheduleSnapshotOutputPort;
+    private final ShiftChangeReminderOutputPort shiftChangeReminderOutputPort;
 
 
     @Override
@@ -32,8 +36,10 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     public Device addPolicyToDevice(Device device, Policy policy) {
         // [Q] how to handle this better? API user could add policy without calling UseCase method, this lead to not creating snapshot of work-schedule
         device.addNewPolicy(policy);
+        WorkSchedule workSchedule = device.generateWorkSchedule();
+        persistWorkScheduleSnapshot(device.getId(), workSchedule);
+        scheduleShiftChangeReminders(device.getId(), workSchedule);
         deviceManagementOutputPort.persistDevice(device);
-        creteSnapshotWithWorkSchedule(device);
         return device;
     }
 
@@ -58,7 +64,12 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     public Optional<Policy> removePolicyFromDevice(Device device, Id policyId) {
         Optional<Policy> removedPolicy = device.removePolicy(policyId);
         deviceManagementOutputPort.persistDevice(device);
-        creteSnapshotWithWorkSchedule(device);
+        if (!device.getPolicies().isEmpty()) {
+            WorkSchedule workSchedule = device.generateWorkSchedule();
+            persistWorkScheduleSnapshot(device.getId(), workSchedule);
+        } else {
+            removeWorkScheduleSnapshot(device);
+        }
         return removedPolicy;
     }
 
@@ -69,13 +80,16 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
                 .flatMap(device -> removePolicyFromDevice(device, policyId));
     }
 
-    private void creteSnapshotWithWorkSchedule(Device device) {
-        // [Q] should move this logic to framework hexagon?
-        if (!device.getPolicies().isEmpty()) {
-            WorkSchedule workSchedule = device.generateWorkSchedule();
-            workScheduleSnapshotOutputPort.persistWorkScheduleSnapshot(device.getId(), workSchedule);
-        } else {
-            workScheduleSnapshotOutputPort.removeSnapshotForDevice(device.getId());
-        }
+    private void persistWorkScheduleSnapshot(Id deviceId, WorkSchedule workSchedule) {
+        workScheduleSnapshotOutputPort.persistWorkScheduleSnapshot(deviceId, workSchedule);
+    }
+
+    private void removeWorkScheduleSnapshot(Device device) {
+        workScheduleSnapshotOutputPort.removeSnapshotForDevice(device.getId());
+    }
+
+    private void scheduleShiftChangeReminders(Id deviceId, WorkSchedule workSchedule) {
+        List<ShiftChangeRemind> reminders = ShiftChangeRemindFactory.basedOn(deviceId, workSchedule).createReminders();
+        shiftChangeReminderOutputPort.scheduleReminders(reminders);
     }
 }

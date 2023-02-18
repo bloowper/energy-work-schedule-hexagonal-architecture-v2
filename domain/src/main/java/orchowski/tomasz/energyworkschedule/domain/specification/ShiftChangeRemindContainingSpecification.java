@@ -15,14 +15,14 @@ public class ShiftChangeRemindContainingSpecification extends AbstractSpecificat
     public boolean isSatisfiedBy(ShiftChangeRemind shiftChangeRemind) {
         Optional<ShiftChangeRemind.ShiftStart> shiftStart = shiftChangeRemind.getShiftStart();
         Optional<ShiftChangeRemind.ShiftEnd> shiftEnd = shiftChangeRemind.getShiftEnd();
-        return shiftStart.isPresent() || shiftEnd.isPresent();
+        return (shiftStart.isPresent() || shiftEnd.isPresent()) && shiftChangeRemind.getDeviceId() != null;
     }
 
     @Override
     public void check(ShiftChangeRemind shiftChangeRemind) throws GenericSpecificationException {
         if (!isSatisfiedBy(shiftChangeRemind)) {
             // TODO provide better domain exception message
-            throw new GenericSpecificationException("Remind of work shift change must include reference to at least one work shift that starts or ends");
+            throw new GenericSpecificationException("Remind of work shift change must include reference to at least one work shift that starts or ends. Also remind must contain deviceId");
         }
     }
 }
