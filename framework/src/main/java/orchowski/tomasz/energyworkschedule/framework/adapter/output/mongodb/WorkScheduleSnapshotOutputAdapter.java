@@ -31,7 +31,7 @@ class WorkScheduleSnapshotOutputAdapter implements WorkScheduleSnapshotOutputPor
     }
 
     @Override
-    public void removeForDevice(Id id) {
+    public void removeSnapshotForDevice(Id id) {
         workScheduleSnapshotDataRepository.removeByDeviceId(id.getUuid().toString());
     }
 }

@@ -6,10 +6,11 @@ import orchowski.tomasz.energyworkschedule.domain.value.WorkSchedule;
 import java.util.Optional;
 
 public interface WorkScheduleSnapshotOutputPort {
+    // TODO test moving creation of snapshot to framework layer
 
     Optional<WorkSchedule> getWorkScheduleSnapshot(Id deviceId);
 
     WorkSchedule persistWorkScheduleSnapshot(Id deviceId, WorkSchedule workSchedule);
 
-    void removeForDevice(Id id);
+    void removeSnapshotForDevice(Id id);
 }

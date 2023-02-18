@@ -75,7 +75,7 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
             WorkSchedule workSchedule = device.generateWorkSchedule();
             workScheduleSnapshotOutputPort.persistWorkScheduleSnapshot(device.getId(), workSchedule);
         } else {
-            workScheduleSnapshotOutputPort.removeForDevice(device.getId());
+            workScheduleSnapshotOutputPort.removeSnapshotForDevice(device.getId());
         }
     }
 }

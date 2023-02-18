@@ -24,7 +24,7 @@ public class DeviceManagementInputPort implements DeviceManagementUseCase {
 
     @Override
     public Optional<Device> removeDevice(Id id) {
-        workScheduleSnapshotOutputPort.removeForDevice(id);
+        workScheduleSnapshotOutputPort.removeSnapshotForDevice(id);
         return deviceManagementOutputPort.removeDevice(id);
     }
 

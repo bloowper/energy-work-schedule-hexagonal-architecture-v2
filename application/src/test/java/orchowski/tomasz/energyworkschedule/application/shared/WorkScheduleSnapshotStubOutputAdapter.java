@@ -23,7 +23,7 @@ class WorkScheduleSnapshotStubOutputAdapter implements WorkScheduleSnapshotOutpu
     }
 
     @Override
-    public void removeForDevice(Id id) {
+    public void removeSnapshotForDevice(Id id) {
         workScheduleMap.remove(id);
     }
 }
