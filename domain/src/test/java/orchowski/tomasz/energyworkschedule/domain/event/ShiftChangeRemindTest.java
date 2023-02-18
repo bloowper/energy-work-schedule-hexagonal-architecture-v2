@@ -88,17 +88,18 @@ public class ShiftChangeRemindTest {
     @Test
     void shouldBeAbleToCreateSwitchShiftRemind() {
         // given
+        Instant now = Instant.now();
         WorkShift shiftThatEnds = new WorkShift(
                 new TimePeriod(
-                        Instant.now(),
-                        Instant.now().plus(Duration.ofHours(2))
+                        now,
+                        now.plus(Duration.ofHours(2))
                 ),
                 new MaxPowerUsageRule(20.)
         );
         WorkShift shiftThatStarts = new WorkShift(
                 new TimePeriod(
-                        Instant.now().plus(Duration.ofHours(2)),
-                        Instant.now().plus(Duration.ofHours(4))
+                        now.plus(Duration.ofHours(2)),
+                        now.plus(Duration.ofHours(4))
                 ),
                 new MaxPowerUsageRule(20.)
         );
