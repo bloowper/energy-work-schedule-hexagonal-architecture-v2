@@ -36,10 +36,10 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     public Device addPolicyToDevice(Device device, Policy policy) {
         // [Q] how to handle this better? API user could add policy without calling UseCase method, this lead to not creating snapshot of work-schedule
         device.addNewPolicy(policy);
+        deviceManagementOutputPort.persistDevice(device);
         WorkSchedule workSchedule = device.generateWorkSchedule();
         persistWorkScheduleSnapshot(device.getId(), workSchedule);
-        scheduleShiftChangeReminders(device.getId(), workSchedule);
-        deviceManagementOutputPort.persistDevice(device);
+        scheduleShiftChangeReminders(device);
         return device;
     }
 
@@ -88,8 +88,8 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
         workScheduleSnapshotOutputPort.removeSnapshotForDevice(device.getId());
     }
 
-    private void scheduleShiftChangeReminders(Id deviceId, WorkSchedule workSchedule) {
-        List<ShiftChangeRemind> reminders = ShiftChangeRemindFactory.basedOn(deviceId, workSchedule).createReminders();
-        shiftChangeReminderOutputPort.scheduleReminders(reminders);
+    private void scheduleShiftChangeReminders(Device device) {
+        List<ShiftChangeRemind> shiftChangeReminds = device.generateShiftChangeReminds();
+        shiftChangeReminderOutputPort.scheduleReminders(shiftChangeReminds);
     }
 }

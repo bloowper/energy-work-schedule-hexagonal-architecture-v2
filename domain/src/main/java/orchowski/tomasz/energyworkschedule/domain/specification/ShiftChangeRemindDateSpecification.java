@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 @NoArgsConstructor(staticName = "getInstance")
-public class ShiftChangeRemindSwitchTimingSpecification extends AbstractSpecification<ShiftChangeRemind> {
+public class ShiftChangeRemindDateSpecification extends AbstractSpecification<ShiftChangeRemind> {
     // TODO provide better name of this specification
     @Override
     public boolean isSatisfiedBy(ShiftChangeRemind shiftChangeRemind) {
