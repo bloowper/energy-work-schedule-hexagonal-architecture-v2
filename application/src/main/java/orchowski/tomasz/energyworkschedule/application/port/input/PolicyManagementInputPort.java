@@ -67,8 +67,10 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
         if (!device.getPolicies().isEmpty()) {
             WorkSchedule workSchedule = device.generateWorkSchedule();
             persistWorkScheduleSnapshot(device.getId(), workSchedule);
+            scheduleShiftChangeReminders(device);
         } else {
             removeWorkScheduleSnapshot(device);
+            removeReminders(device);
         }
         return removedPolicy;
     }
@@ -89,7 +91,12 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     }
 
     private void scheduleShiftChangeReminders(Device device) {
+        shiftChangeReminderOutputPort.removeRemindersForDevice(device.getId());
         List<ShiftChangeRemind> shiftChangeReminds = device.generateShiftChangeReminds();
         shiftChangeReminderOutputPort.scheduleReminders(shiftChangeReminds);
+    }
+
+    private void removeReminders(Device device) {
+        shiftChangeReminderOutputPort.removeRemindersForDevice(device.getId());
     }
 }
