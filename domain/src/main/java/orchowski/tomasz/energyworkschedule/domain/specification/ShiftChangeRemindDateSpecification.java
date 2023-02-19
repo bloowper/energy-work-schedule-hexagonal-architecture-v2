@@ -13,8 +13,8 @@ public class ShiftChangeRemindDateSpecification extends AbstractSpecification<Sh
     // TODO provide better name of this specification
     @Override
     public boolean isSatisfiedBy(ShiftChangeRemind shiftChangeRemind) {
-        Optional<ShiftChangeRemind.ShiftEnd> optionalShiftEnd = shiftChangeRemind.getShiftEnd();
-        Optional<ShiftChangeRemind.ShiftStart> optionalShiftStart = shiftChangeRemind.getShiftStart();
+        Optional<ShiftChangeRemind.ShiftEnd> optionalShiftEnd = shiftChangeRemind.getShiftThatEnds();
+        Optional<ShiftChangeRemind.ShiftStart> optionalShiftStart = shiftChangeRemind.getShiftThatStarts();
         if (optionalShiftStart.isEmpty() || optionalShiftEnd.isEmpty()) {
             // this specification check only relation of instants in end and start
             return true;

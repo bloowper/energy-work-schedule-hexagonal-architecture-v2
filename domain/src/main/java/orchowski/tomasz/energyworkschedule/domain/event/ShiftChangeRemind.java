@@ -11,6 +11,7 @@ import orchowski.tomasz.energyworkschedule.domain.specification.ShiftChangeRemin
 import orchowski.tomasz.energyworkschedule.domain.value.Id;
 import orchowski.tomasz.energyworkschedule.domain.value.WorkShift;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @EqualsAndHashCode
@@ -19,15 +20,21 @@ import java.util.Optional;
 public class ShiftChangeRemind {
     // [Q] is using optionals af fields is ok? How such design should looks like?
     private final Id deviceId;
-    private final Optional<ShiftEnd> shiftEnd;
-    private final Optional<ShiftStart> shiftStart;
+    private final Instant remindDate;
+    private final Optional<ShiftEnd> shiftThatEnds;
+    private final Optional<ShiftStart> shiftThatStarts;
 
-    private ShiftChangeRemind(Id deviceId, WorkShift shiftEnd, WorkShift shiftStart) {
-        this.shiftEnd = Optional.ofNullable(shiftEnd).map(ShiftEnd::new);
-        this.shiftStart = Optional.ofNullable(shiftStart).map(ShiftStart::new);
+    private ShiftChangeRemind(Id deviceId, WorkShift shiftThatEnds, WorkShift shiftThatStarts) {
+        this.shiftThatEnds = Optional.ofNullable(shiftThatEnds).map(ShiftEnd::new);
+        this.shiftThatStarts = Optional.ofNullable(shiftThatStarts).map(ShiftStart::new);
         this.deviceId = deviceId;
         ShiftChangeRemindContainingSpecification.getInstance().check(this);
         ShiftChangeRemindDateSpecification.getInstance().check(this);
+        if (shiftThatStarts != null) {
+            remindDate = shiftThatStarts.getDuration().getStart();
+        } else {
+            remindDate = shiftThatEnds.getDuration().getEnd();
+        }
     }
 
     public static ShiftChangeRemind ofEnd(Id deviceId, WorkShift shiftThatEnds) {
@@ -44,17 +51,21 @@ public class ShiftChangeRemind {
 
     public ShiftChangeRemind changeToSwitch(WorkShift shiftThatStarts) {
         ShiftChangeRemindChangeToSwitchSpecification.getInstance().check(this);
-        return ofSwitch(this.deviceId, this.shiftEnd.get().getWorkShift(), shiftThatStarts);
+        return ofSwitch(this.deviceId, this.shiftThatEnds.get().getWorkShift(), shiftThatStarts);
     }
 
     public RemindType getType() {
-        if (shiftEnd.isPresent() && shiftStart.isPresent()) {
+        if (shiftThatEnds.isPresent() && shiftThatStarts.isPresent()) {
             return RemindType.SWITCH_OF_SHIFT;
-        } else if (shiftStart.isPresent()) {
+        } else if (shiftThatStarts.isPresent()) {
             return RemindType.START_OF_SHIFT;
         } else {
             return RemindType.END_OF_SHIFT;
         }
+    }
+
+    public Instant getDate() {
+        return remindDate;
     }
 
     public enum RemindType {

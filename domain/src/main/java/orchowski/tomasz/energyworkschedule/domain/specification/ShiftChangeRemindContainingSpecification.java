@@ -13,8 +13,8 @@ public class ShiftChangeRemindContainingSpecification extends AbstractSpecificat
 
     @Override
     public boolean isSatisfiedBy(ShiftChangeRemind shiftChangeRemind) {
-        Optional<ShiftChangeRemind.ShiftStart> shiftStart = shiftChangeRemind.getShiftStart();
-        Optional<ShiftChangeRemind.ShiftEnd> shiftEnd = shiftChangeRemind.getShiftEnd();
+        Optional<ShiftChangeRemind.ShiftStart> shiftStart = shiftChangeRemind.getShiftThatStarts();
+        Optional<ShiftChangeRemind.ShiftEnd> shiftEnd = shiftChangeRemind.getShiftThatEnds();
         return (shiftStart.isPresent() || shiftEnd.isPresent()) && shiftChangeRemind.getDeviceId() != null;
     }
 

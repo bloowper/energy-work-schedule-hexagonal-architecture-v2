@@ -7,3 +7,6 @@ spring:
       password: ${MONGODB_PASSWORD:password}
       database: ${MONGODB_DATABASE_NAME:workSchedule}
       authentication-database: ${MONGODB_AUTHENTICATION_DATABASE:admin}
+logging:
+  level:
+    orchowski: debug

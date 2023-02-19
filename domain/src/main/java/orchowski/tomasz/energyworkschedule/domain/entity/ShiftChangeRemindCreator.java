@@ -22,7 +22,7 @@ class ShiftChangeRemindCreator {
             WorkShift workShift = workShifts.get(i);
             if (i >= 1 &&
                     getPrevious(shiftChangeReminds).getType().equals(ShiftChangeRemind.RemindType.END_OF_SHIFT) &&
-                    getPrevious(shiftChangeReminds).getShiftEnd().get().getWorkShift().getDuration().getEnd().equals(workShift.getDuration().getStart())
+                    getPrevious(shiftChangeReminds).getShiftThatEnds().get().getWorkShift().getDuration().getEnd().equals(workShift.getDuration().getStart())
             ) {
                 ShiftChangeRemind previousShiftChangeRemind = shiftChangeReminds.get(shiftChangeReminds.size() - 1);
                 ShiftChangeRemind shiftSwitch = previousShiftChangeRemind.changeToSwitch(workShift);
