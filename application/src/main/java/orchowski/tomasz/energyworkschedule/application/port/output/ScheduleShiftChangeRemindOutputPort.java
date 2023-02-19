@@ -5,7 +5,7 @@ import orchowski.tomasz.energyworkschedule.domain.value.Id;
 
 import java.util.List;
 
-public interface ShiftChangeReminderOutputPort {
+public interface ScheduleShiftChangeRemindOutputPort {
     void scheduleReminders(List<ShiftChangeRemind> shiftChangeReminds);
 
     void removeRemindersForDevice(Id deviceId);

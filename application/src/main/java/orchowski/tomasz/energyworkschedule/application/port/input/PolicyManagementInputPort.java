@@ -3,7 +3,7 @@ package orchowski.tomasz.energyworkschedule.application.port.input;
 import lombok.RequiredArgsConstructor;
 import orchowski.tomasz.energyworkschedule.application.exception.EntityNotFoundException;
 import orchowski.tomasz.energyworkschedule.application.port.output.DeviceManagementOutputPort;
-import orchowski.tomasz.energyworkschedule.application.port.output.ShiftChangeReminderOutputPort;
+import orchowski.tomasz.energyworkschedule.application.port.output.ScheduleShiftChangeRemindOutputPort;
 import orchowski.tomasz.energyworkschedule.application.port.output.WorkScheduleSnapshotOutputPort;
 import orchowski.tomasz.energyworkschedule.application.usecase.PolicyManagementUseCase;
 import orchowski.tomasz.energyworkschedule.domain.entity.Device;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class PolicyManagementInputPort implements PolicyManagementUseCase {
     private final DeviceManagementOutputPort deviceManagementOutputPort;
     private final WorkScheduleSnapshotOutputPort workScheduleSnapshotOutputPort;
-    private final ShiftChangeReminderOutputPort shiftChangeReminderOutputPort;
+    private final ScheduleShiftChangeRemindOutputPort scheduleShiftChangeRemindOutputPort;
 
 
     @Override
@@ -91,12 +91,12 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     }
 
     private void scheduleShiftChangeReminders(Device device) {
-        shiftChangeReminderOutputPort.removeRemindersForDevice(device.getId());
+        scheduleShiftChangeRemindOutputPort.removeRemindersForDevice(device.getId());
         List<ShiftChangeRemind> shiftChangeReminds = device.generateShiftChangeReminds();
-        shiftChangeReminderOutputPort.scheduleReminders(shiftChangeReminds);
+        scheduleShiftChangeRemindOutputPort.scheduleReminders(shiftChangeReminds);
     }
 
     private void removeReminders(Device device) {
-        shiftChangeReminderOutputPort.removeRemindersForDevice(device.getId());
+        scheduleShiftChangeRemindOutputPort.removeRemindersForDevice(device.getId());
     }
 }
