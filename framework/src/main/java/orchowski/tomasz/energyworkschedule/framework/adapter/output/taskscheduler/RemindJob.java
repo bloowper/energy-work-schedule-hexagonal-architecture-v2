@@ -1,4 +1,4 @@
-package orchowski.tomasz.energyworkschedule.framework.adapter.bidirectional.taskscheduler;
+package orchowski.tomasz.energyworkschedule.framework.adapter.output.taskscheduler;
 
 
 import lombok.AllArgsConstructor;

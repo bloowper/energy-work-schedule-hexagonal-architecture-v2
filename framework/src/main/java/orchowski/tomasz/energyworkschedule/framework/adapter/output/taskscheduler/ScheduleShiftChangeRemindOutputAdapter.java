@@ -1,4 +1,4 @@
-package orchowski.tomasz.energyworkschedule.framework.adapter.bidirectional.taskscheduler;
+package orchowski.tomasz.energyworkschedule.framework.adapter.output.taskscheduler;
 
 import lombok.extern.slf4j.Slf4j;
 import orchowski.tomasz.energyworkschedule.application.port.output.ScheduleShiftChangeRemindOutputPort;
@@ -8,6 +8,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +33,11 @@ class ScheduleShiftChangeRemindOutputAdapter implements ScheduleShiftChangeRemin
     @Override
     public void scheduleReminders(List<ShiftChangeRemind> shiftChangeReminds) {
         log.info("Scheduling reminders: {}", shiftChangeReminds);
+        Instant now = Instant.now();
         List<? extends ScheduledFuture<?>> scheduledFutures = shiftChangeReminds.stream()
+                .filter(shiftChangeRemind ->
+                        shiftChangeRemind.getDate().isAfter(now)
+                )
                 .map(RemindJob::new)
                 .map(remindJob ->
                         taskScheduler.schedule(
