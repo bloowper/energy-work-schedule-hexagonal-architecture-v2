@@ -14,6 +14,6 @@ class RemindJob implements Runnable {
 
     @Override
     public void run() {
-        log.info("Begins {} for device {}", shiftChangeRemind.getType(), shiftChangeRemind.getDeviceId());
+        log.info("{} for device {}", shiftChangeRemind.getType(), shiftChangeRemind.getDeviceId());
     }
 }

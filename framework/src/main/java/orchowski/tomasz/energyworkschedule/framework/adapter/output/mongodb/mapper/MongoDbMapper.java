@@ -62,7 +62,7 @@ public class MongoDbMapper {
     }
 
     public DeviceData toData(Device device) {
-        List<PolicyData> policiesData = device.getPolicies().stream()
+        List<PolicyData> policiesData = device.getPoliciesView().stream()
                 .map(this::toData)
                 .toList();
         return new DeviceData(
@@ -102,7 +102,7 @@ public class MongoDbMapper {
         return new WorkShiftData(
                 workShift.getDuration().getStart(),
                 workShift.getDuration().getEnd(),
-                new MaxPowerUsageRuleData(workShift.getRule().value)
+                new MaxPowerUsageRuleData(workShift.getRule().getValue())
         );
     }
 

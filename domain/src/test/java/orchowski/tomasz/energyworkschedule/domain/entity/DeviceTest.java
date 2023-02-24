@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.SortedSet;
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -65,7 +65,7 @@ class DeviceTest {
         device.addNewPolicy(policy);
 
         // then
-        SortedSet<Policy> policies = device.getPolicies();
+        Collection<Policy> policies = device.getPoliciesView();
         assertThat(policies)
                 .contains(policy);
     }

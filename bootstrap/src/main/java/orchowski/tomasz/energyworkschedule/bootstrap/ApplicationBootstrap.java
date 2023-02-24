@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
                 "orchowski.tomasz.energyworkschedule.framework.adapter.output.mongodb"
         }
 )
+@EnableScheduling
 public class ApplicationBootstrap {
     public static void main(String[] args) {
         SpringApplication.run(ApplicationBootstrap.class, args);

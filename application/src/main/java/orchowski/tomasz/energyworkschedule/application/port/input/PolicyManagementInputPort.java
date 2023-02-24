@@ -51,10 +51,15 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     }
 
     @Override
+    public List<Policy> getDevicePolicies(Id deviceId) {
+        return deviceManagementOutputPort.fetchDevice(deviceId).orElseThrow(() -> new EntityNotFoundException(Device.class, deviceId)).getPoliciesView();
+    }
+
+    @Override
     public Optional<Policy> getPolicy(Id deviceId, Id policyId) {
         return deviceManagementOutputPort.fetchDevice(deviceId)
                 .flatMap(
-                        device -> device.getPolicies().stream()
+                        device -> device.getPoliciesView().stream()
                                 .filter(policy -> policy.getId().equals(policyId))
                                 .findFirst()
                 );
@@ -64,7 +69,7 @@ public class PolicyManagementInputPort implements PolicyManagementUseCase {
     public Optional<Policy> removePolicyFromDevice(Device device, Id policyId) {
         Optional<Policy> removedPolicy = device.removePolicy(policyId);
         deviceManagementOutputPort.persistDevice(device);
-        if (!device.getPolicies().isEmpty()) {
+        if (!device.getPoliciesView().isEmpty()) {
             WorkSchedule workSchedule = device.generateWorkSchedule();
             persistWorkScheduleSnapshot(device.getId(), workSchedule);
             scheduleShiftChangeReminders(device);

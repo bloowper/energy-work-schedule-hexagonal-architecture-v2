@@ -16,9 +16,10 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Getter
 public class Device {
+    // [Q] how to persist domain entity without adding getters? For example if i have internal data that i don't want to expose in any way
     @EqualsAndHashCode.Include
+    @Getter
     private final Id id;
     private final SortedSet<Policy> policies = new TreeSet<>(Comparator.comparing(o -> o.getEffectiveDate().getStart()));
 
@@ -38,6 +39,20 @@ public class Device {
                 .findFirst();
         policies.removeIf(policyPredicate);
         return optionalPolicy;
+    }
+
+    /**
+     * @return copy of policies that device contains
+     */
+    public List<Policy> getPoliciesView() {
+        return policies.stream()
+                .map(policy -> new Policy(
+                        policy.getId(),
+                        policy.getEffectiveDate(),
+                        policy.getPriority(),
+                        policy.getMaxPowerUsageRule()
+                ))
+                .toList();
     }
 
     public WorkSchedule generateWorkSchedule() {

@@ -2,12 +2,10 @@ package orchowski.tomasz.energyworkschedule.domain.value;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import orchowski.tomasz.energyworkschedule.domain.specification.PrioritySpecification;
 
 @Getter
-@Setter
 @ToString
 @EqualsAndHashCode
 public class Priority {

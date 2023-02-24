@@ -43,7 +43,7 @@ class PolicyManagementTest extends BaseSpecification {
 
         then: "System should contain new policy"
         deviceManagementUseCase.fetchDevice(device.id).get()
-                .policies.stream()
+                .policiesView.stream()
                 .filter { (it == newPolicy) }
                 .findAny().isPresent()
     }
@@ -65,7 +65,7 @@ class PolicyManagementTest extends BaseSpecification {
 
         then: "System should not contain deleted policy"
         deviceManagementUseCase.fetchDevice(device.id).get()
-                .policies.stream()
+                .policiesView.stream()
                 .filter { it.id == id }
                 .findAny().isEmpty()
 

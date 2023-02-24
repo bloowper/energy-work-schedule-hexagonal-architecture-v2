@@ -9,7 +9,7 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddPowerUsagePolicyRequest {
+public class AddPowerUsagePolicyRestRequest {
     Instant start;
     Instant end;
     int priority;

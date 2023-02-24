@@ -10,7 +10,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public abstract class Rule<T> {
-    public final T value;
+    protected final T value;
 
     public abstract String getDescription();
 }
