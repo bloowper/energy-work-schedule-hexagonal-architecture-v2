@@ -1,19 +1,33 @@
 ### fetch device resource
 # @no-log
-
 GET http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75
 Content-Type: application/json
 
+
+
 ### put device resource
 # @no-log
-
 PUT http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75
 Content-Type: application/json
 
+
+
 ### delete device resource
 # @no-log
-
 DELETE http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75
+Content-Type: application/json
+
+
+
+### get policies for device
+# @no-log
+GET http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75/policy
+Content-Type: application/json
+
+
+### get policy resource
+# @no-log
+GET http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75/policy/25090caf-8da9-4999-8f73-8316bfdcb3c0
 Content-Type: application/json
 
 
@@ -24,27 +38,21 @@ POST http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75/po
 Content-Type: application/json
 
 {
-  "start": "2023-02-24T18:10:00.113Z",
-  "end": "2023-02-24T18:10:30.113Z",
+  "start": "2023-02-24T18:45:00.113Z",
+  "end": "2023-02-24T18:46:30.113Z",
   "priority": 1,
   "maxAllowedPowerUsage": 980.1
 }
 
 
-### get policy resource
-# @no-log
-
-GET http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75/policy/25090caf-8da9-4999-8f73-8316bfdcb3c0
-Content-Type: application/json
-
 ### delete policy resource
 # @no-log
-
 DELETE http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75/policy/25090caf-8da9-4999-8f73-8316bfdcb3c0
 Content-Type: application/json
 
+
+
 ### get work schedule resource
 # @no-log
-
 GET http://localhost:8080/api/v1/device/b1519033-e3e4-4a9a-8534-368ade65af75/work-schedule
 Content-Type: application/json
