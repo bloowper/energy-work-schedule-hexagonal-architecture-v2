@@ -4,3 +4,4 @@
 
 # Roadmap
 * change ScheduleShiftChangeRemindOutputPort implementation to one that could be used in production
+* create view dto for rest adapter
