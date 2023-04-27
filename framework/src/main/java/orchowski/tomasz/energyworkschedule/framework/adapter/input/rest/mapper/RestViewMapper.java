@@ -26,7 +26,7 @@ public class RestViewMapper {
 
 
     public String toView(Id id) {
-        return id.getUuid().toString();
+        return id.toString();
     }
 
     public PolicyRestView toView(Policy policy) {

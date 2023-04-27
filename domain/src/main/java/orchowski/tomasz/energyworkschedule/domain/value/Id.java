@@ -9,7 +9,6 @@ import lombok.ToString;
 import java.util.UUID;
 
 @Getter
-@ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Id {
@@ -21,5 +20,10 @@ public class Id {
 
     public static Id generateNew() {
         return new Id(UUID.randomUUID());
+    }
+
+    @Override
+    public String toString() {
+        return uuid.toString();
     }
 }
