@@ -1,11 +1,7 @@
 package orchowski.tomasz.energyworkschedule.domain.entity;
 
 import orchowski.tomasz.energyworkschedule.domain.event.ShiftChangeRemind;
-import orchowski.tomasz.energyworkschedule.domain.value.Id;
-import orchowski.tomasz.energyworkschedule.domain.value.MaxPowerUsageRule;
-import orchowski.tomasz.energyworkschedule.domain.value.Priority;
-import orchowski.tomasz.energyworkschedule.domain.value.TimePeriod;
-import orchowski.tomasz.energyworkschedule.domain.value.WorkShift;
+import orchowski.tomasz.energyworkschedule.domain.value.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -14,7 +10,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DeviceShiftChangeRemindTest {
+class ShiftChangeRemindTest {
 
 
     @Test
@@ -38,6 +34,10 @@ class DeviceShiftChangeRemindTest {
         List<ShiftChangeRemind> shiftChangeReminds = device.generateShiftChangeReminds();
 
         // then
+        System.out.println(ShiftChangeRemind.ofStart(deviceId, workShift));
+        System.out.println(shiftChangeReminds.get(0));
+        assertThat(shiftChangeReminds.get(0)).isEqualTo(ShiftChangeRemind.ofStart(deviceId, workShift));
+
         assertThat(shiftChangeReminds)
                 .containsExactly(
                         ShiftChangeRemind.ofStart(deviceId, workShift),
@@ -112,8 +112,9 @@ class DeviceShiftChangeRemindTest {
                 new Priority(1),
                 new MaxPowerUsageRule(450.)
         ));
-        WorkShift firstWorkShift = device.generateWorkSchedule().getWorkShifts().get(0);
-        WorkShift secondWorkShift = device.generateWorkSchedule().getWorkShifts().get(1);
+        WorkSchedule workSchedule = device.generateWorkSchedule();
+        WorkShift firstWorkShift = workSchedule.getWorkShifts().get(0);
+        WorkShift secondWorkShift = workSchedule.getWorkShifts().get(1);
 
         // when
         List<ShiftChangeRemind> shiftChangeReminds = device.generateShiftChangeReminds();

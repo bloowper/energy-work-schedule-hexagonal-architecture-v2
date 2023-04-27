@@ -14,6 +14,14 @@ public class WorkShift {
         this.rule = rule;
     }
 
+    public Instant getStart() {
+        return duration.getStart();
+    }
+
+    public Instant getEnd() {
+        return duration.getEnd();
+    }
+
     public static WorkShiftBuilder builder() {
         return new WorkShiftBuilder();
     }

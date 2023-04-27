@@ -18,18 +18,16 @@ class ShiftChangeRemindTest {
     void shouldNotBeAbleToCreateARemindWithoutWorkShifts() {
         // given
         Id deviceId = Id.generateNew();
-        WorkShift shiftThatEnds = null;
-        WorkShift shiftThatStarts = null;
 
-        // then
+        // when then
         assertThrows(GenericSpecificationException.class, () -> {
-            ShiftChangeRemind.ofStart(deviceId, shiftThatStarts);
+            ShiftChangeRemind.ofStart(deviceId, null);
         });
         assertThrows(GenericSpecificationException.class, () -> {
-            ShiftChangeRemind.ofEnd(deviceId, shiftThatEnds);
+            ShiftChangeRemind.ofEnd(deviceId, null);
         });
         assertThrows(GenericSpecificationException.class, () -> {
-            ShiftChangeRemind.ofSwitch(deviceId, shiftThatEnds, shiftThatStarts);
+            ShiftChangeRemind.ofSwitch(deviceId, null, null);
         });
     }
 

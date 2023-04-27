@@ -8,6 +8,7 @@ import orchowski.tomasz.energyworkschedule.domain.value.WorkShift;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor(staticName = "basedOn")
 class ShiftChangeRemindCreator {
@@ -15,17 +16,14 @@ class ShiftChangeRemindCreator {
     private final WorkSchedule workSchedule;
 
     public List<ShiftChangeRemind> createReminders() {
-        // TODO refactor!!! it's practically unreadable. Total garbage :D
+        // TODO refactor!!! it's practically unreadable.
         List<ShiftChangeRemind> shiftChangeReminds = new ArrayList<>();
         List<WorkShift> workShifts = workSchedule.getWorkShifts();
         for (int i = 0; i < workShifts.size(); i++) {
             WorkShift workShift = workShifts.get(i);
-            if (i >= 1 &&
-                    getPrevious(shiftChangeReminds).getType().equals(ShiftChangeRemind.RemindType.END_OF_SHIFT) &&
-                    getPrevious(shiftChangeReminds).getShiftThatEnds().get().getWorkShift().getDuration().getEnd().equals(workShift.getDuration().getStart())
-            ) {
+            if (isLastRemindIsBeginningOfShift(shiftChangeReminds, workShift)) {
                 ShiftChangeRemind previousShiftChangeRemind = shiftChangeReminds.get(shiftChangeReminds.size() - 1);
-                ShiftChangeRemind shiftSwitch = previousShiftChangeRemind.changeToSwitch(workShift);
+                ShiftChangeRemind shiftSwitch = previousShiftChangeRemind.changeEndToSwitch(workShift);
                 shiftChangeReminds.set(i, shiftSwitch);
                 shiftChangeReminds.add(ShiftChangeRemind.ofEnd(deviceId, workShift));
                 continue;
@@ -36,8 +34,19 @@ class ShiftChangeRemindCreator {
         return shiftChangeReminds;
     }
 
-    private ShiftChangeRemind getPrevious(List<ShiftChangeRemind> shiftChangeReminds) {
-        return shiftChangeReminds.get(shiftChangeReminds.size() - 1);
+    private boolean isLastRemindIsBeginningOfShift(List<ShiftChangeRemind> shiftChangeReminds, WorkShift workShift) {
+        Optional<ShiftChangeRemind> lastShiftChangeRemind = getLast(shiftChangeReminds);
+        return lastShiftChangeRemind.isPresent() &&
+                lastShiftChangeRemind.get().getType().equals(ShiftChangeRemind.RemindType.END_OF_SHIFT) &&
+                lastShiftChangeRemind.get().getDate().equals(workShift.getStart());
+    }
+
+    private Optional<ShiftChangeRemind> getLast(List<ShiftChangeRemind> shiftChangeReminds) {
+        if (!shiftChangeReminds.isEmpty()) {
+            return Optional.of(shiftChangeReminds.get(shiftChangeReminds.size() - 1));
+        } else {
+            return Optional.empty();
+        }
     }
 
 }
