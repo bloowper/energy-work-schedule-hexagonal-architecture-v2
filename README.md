@@ -1,3 +1,6 @@
+# Purpose
+
+The WorkSchedule is a microservice responsible for creating and managing work shifts for devices. These work shifts aim to optimize energy consumption and ensure the efficient functioning of devices. It also emits notifications at the beginning of each work shift to inform other components or systems.
 
 # Inspiration
 
